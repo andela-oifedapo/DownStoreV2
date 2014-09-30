@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html ng-app="DownStore">
+	<head>
+		<title>
+			DownStore
+		</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href='http://fonts.googleapis.com/css?family=Paytone+One|Righteous' rel='stylesheet' type='text/css'>
+		<link href="img/page_icon.PNG" rel="shortcut icon" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<script type="text/javascript" src="js/angular.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/angular-animate.js" charset="utf-8"></script>
+	</head>
+	<body ng-controller="APIController as apiCtrl">
+		<header>
+			<section id="menu" ng-click="apiCtrl.toggleMenu()">
+				<img src="img/menu_icon.png">
+			</section>
+			
+			<nav>
+				<ul>
+					<li class="logo">
+						<h1 class="logo_text">DownStore!</h1>
+					</li>
+					
+					<li class="link" category="home" ng-click="apiCtrl.setHome()" ng-show="a" ng-class="{'anim': apiCtrl.menuOut}">
+						home
+					</li>
+
+					<li class="link" category="app" ng-click="apiCtrl.pageView(apiCtrl.APIS.app)" ng-class="{'anim': apiCtrl.menuOut}">
+						Apps
+					</li>
+					<li class="link" category="video" ng-click="apiCtrl.pageView(apiCtrl.APIS.video)" ng-class="{'anim': apiCtrl.menuOut}">
+						Video
+					</li>
+					<li class="link" category="music" ng-click="apiCtrl.pageView(apiCtrl.APIS.music)" ng-class="{'anim': apiCtrl.menuOut}">
+						Music
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<section id="search-text">
+			<form ng-submit="apiCtrl.search()">
+				<input type="text" id="search" ng-model="searchQuery" placeholder="Search here...">
+				<button id="search_button" value="search" ng-click="">Search Store</button>
+			</form>
+		</section>
+		
+		<section class="media_list">
+			<ul id="msg"></ul>
+		</section>
+
+<!-- Videos -->
+		<section class="media_list" ng-show="apiCtrl.APIS.video.display">
+			<h1 class="title">Videos</h1>
+			<ul id="video">
+				<p>{{apiCtrl.APIS.video.contigencyOutput}}</p>
+				<img src='img/loading_icon.gif' ng-show="apiCtrl.APIS.video.loading">
+				<li ng-repeat="datum in responseData.video">
+					<iframe ng-src="{{apiCtrl.APIS.video.playerUrl + datum.uri.substr(8)}}"
+					 width='180' height='180' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+					<p ng-title="{{datum.name}}">{{datum.name.substr(0, 25) + "..."}}</p>
+				</li>
+			</ul>
+		</section>
+
+
+
+<!-- Music -->
+		<section class="media_list" ng-show="apiCtrl.APIS.music.display">
+			<h1 class="title">Music</h1>
+			<ul id="music">
+				<p>{{apiCtrl.APIS.music.contigencyOutput}}</p>
+				<img src='img/loading_icon.gif' ng-show="apiCtrl.APIS.music.loading">
+				<a ng-href="{{datum.downloadPage}}" target='_blank' ng-title='Click for Download Page' ng-repeat="datum in responseData.music">
+					<li>
+						<img ng-src="{{apiCtrl.APIS.music.iconUrl}}">
+						<p ng-title="{{datum.name}}">{{datum.name.substr(0, 25) + "..."}}</p>
+					</li>
+				</a>
+			</ul>
+		</section>
+			
+
+
+
+<!-- Apps -->
+		<section class="media_list" ng-show="apiCtrl.APIS.app.display">
+			<h1 class="title">Apps</h1>
+			<ul id="app">
+				<p>{{apiCtrl.APIS.app.contigencyOutput}}</p>
+				<img src='img/loading_icon.gif' ng-show="apiCtrl.APIS.app.loading">
+				<a ng-href="{{datum.downloadPage}}" target='_blank' ng-title='Click for Download Page' ng-repeat="datum in responseData.app">
+					<li>
+						<img ng-src="{{apiCtrl.APIS.app.iconUrl}}">
+						<p ng-title="{{datum.name}}">{{datum.name.substr(0, 25) + "..."}}</p>
+					</li>
+				</a>
+			</ul>
+		</section>
+
+		<footer>
+			<ul>
+				<li><a href="">&copy; Andela 2014</a></li>
+			</ul>
+		</footer>
+	</body>
+	<script type="text/javascript" src="js/app.js"></script>
+</html>
